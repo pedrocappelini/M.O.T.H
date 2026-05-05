@@ -1,7 +1,5 @@
 pub struct Vm2Bits {
     pub reg: [u8; 4],
-    pub pc: u8,
-    pub memory: [u8; 128],
     pub add: bool,
 }
 
@@ -9,8 +7,6 @@ impl Vm2Bits {
     pub fn new() -> Self {
         Self {
             reg: [0; 4],
-            pc: 0,
-            memory: [0u8; 128],
             add: true,
         }
     }
