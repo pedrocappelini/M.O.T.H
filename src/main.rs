@@ -8,8 +8,13 @@ fn main() {
     let mut vm4bits = Vm4Bits::new();
 
     vm4bits.memory[0] = 0b0001;
-    vm4bits.memory[3] = 0b0000;
+    vm4bits.memory[1] = 0b1111;
+    vm4bits.memory[2] = 0b1111;
+
     loop {
         vm4bits.cycle();
+        if vm4bits.pc > 6 {
+            break;
+        }
     }
 }

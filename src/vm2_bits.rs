@@ -1,6 +1,7 @@
 pub struct Vm2Bits {
     pub reg: [u8; 4],
     pub add: bool,
+    pub adc: bool,
 }
 
 impl Vm2Bits {
@@ -8,12 +9,15 @@ impl Vm2Bits {
         Self {
             reg: [0; 4],
             add: true,
+            adc: false,
         }
     }
 
     pub fn cycles(&mut self) {
         let mut a = self.reg[0];
         let mut b = self.reg[1];
+
+        let mut previous_carry = self.reg[3];
 
         if self.add {
             while b != 0 {
@@ -29,10 +33,18 @@ impl Vm2Bits {
             }
         }
 
+        if self.adc {
+            while previous_carry != 0 {
+                let carry = a & previous_carry;
+                a = a ^ previous_carry;
+                previous_carry = carry << 1;
+            }
+            self.adc = false;
+            self.reg[3] = 0;
+        }
+
         self.reg[0] = a & 0b11;
-        dbg!(&self.reg[0]);
         self.reg[3] = (a >> 2) & 0b01;
-        dbg!(&self.reg[3]);
 
         self.reg[1] = 0;
     }
